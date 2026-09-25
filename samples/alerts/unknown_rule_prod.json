@@ -1,0 +1,10 @@
+{
+  "rule": "SearchLatencyP99High",
+  "domain": "player-search-prod",
+  "environment": "prod",
+  "title": "Search p99 latency 2.4s (SLO 800ms)",
+  "description": "SearchLatency p99 above SLO for 10 minutes; error rate normal",
+  "metric": "SearchLatency",
+  "value": 2400,
+  "threshold": 800
+}

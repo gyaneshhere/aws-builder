@@ -1,0 +1,30 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "OpenSearchReadOnlyHttp",
+      "Effect": "Allow",
+      "Action": ["es:ESHttpGet"],
+      "Resource": ["arn:aws:es:${REGION}:${ACCOUNT_ID}:domain/*"]
+    },
+    {
+      "Sid": "CloudWatchRead",
+      "Effect": "Allow",
+      "Action": ["cloudwatch:GetMetricStatistics", "sts:GetCallerIdentity"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Logs",
+      "Effect": "Allow",
+      "Action": ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
+      "Resource": "arn:aws:logs:${REGION}:${ACCOUNT_ID}:*"
+    },
+    {
+      "Sid": "VpcEni",
+      "Effect": "Allow",
+      "Action": ["ec2:CreateNetworkInterface", "ec2:DescribeNetworkInterfaces", "ec2:DeleteNetworkInterface",
+                 "ec2:AssignPrivateIpAddresses", "ec2:UnassignPrivateIpAddresses"],
+      "Resource": "*"
+    }
+  ]
+}

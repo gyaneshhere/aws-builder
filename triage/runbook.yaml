@@ -1,0 +1,165 @@
+# OpenSearch alert runbook catalog used by the triage agent.
+#
+# STARTER CONTENT: these entries follow the AWS-recommended CloudWatch alarms for
+# Amazon OpenSearch Service. Replace/extend them with your team's 19 rules so the
+# `id` values match the `alertname` label your Grafana rules emit.
+#
+# Fields
+#   id               alertname as emitted by Grafana (exact match, case-insensitive)
+#   stack            which alert stack the rule belongs to
+#   metric           AWS/ES CloudWatch metric (also used as a secondary match key)
+#   summary          what the alert means (Jev reads this to map unknown alerts)
+#   min_tier_prod    hard floor enforced in code for prod  (L1 | L2 | L3)
+#   min_tier_nonprod hard floor enforced in code for nonprod
+#   l1_steps         documented first response (fed to the LLM verbatim)
+#   escalation       who/when to escalate
+
+rules:
+  - id: ClusterStatusRed
+    stack: cluster-health
+    metric: ClusterStatus.red
+    summary: At least one primary shard is unassigned; some data is unavailable for search and writes.
+    min_tier_prod: L3
+    min_tier_nonprod: L2
+    l1_steps:
+      - Check _cluster/health and _cat/shards for UNASSIGNED primaries.
+      - Run _cluster/allocation/explain for the first unassigned primary.
+      - Do NOT delete indices; escalate immediately in prod.
+    escalation: Page DBA on-call; open AWS Support case if a node is missing or storage is full.
+
+  - id: ClusterStatusYellow
+    stack: cluster-health
+    metric: ClusterStatus.yellow
+    summary: All primaries assigned but one or more replicas are unassigned; redundancy reduced.
+    min_tier_prod: L1
+    min_tier_nonprod: L1
+    l1_steps:
+      - Check whether a blue/green deployment or node replacement is in progress.
+      - Confirm replica count <= data node count - 1.
+      - If yellow persists > 30 min outside a deployment, escalate to L2.
+    escalation: L2 if persistent beyond 30 minutes.
+
+  - id: FreeStorageSpaceLow
+    stack: capacity
+    metric: FreeStorageSpace
+    summary: A data node is below the free-storage threshold; at 0 the cluster blocks writes.
+    min_tier_prod: L2
+    min_tier_nonprod: L1
+    l1_steps:
+      - Identify the fullest nodes via _cat/nodes (disk.used_percent).
+      - Check for large or stale indices and ISM rollover/delete policy failures.
+    escalation: L3 if any node > 95% used or ClusterIndexWritesBlocked fires.
+
+  - id: ClusterIndexWritesBlocked
+    stack: capacity
+    metric: ClusterIndexWritesBlocked
+    summary: The cluster is blocking write requests (storage, JVM or index.blocks setting).
+    min_tier_prod: L3
+    min_tier_nonprod: L2
+    l1_steps:
+      - Check FreeStorageSpace and JVMMemoryPressure for the same window.
+      - Check for index.blocks.write / read_only_allow_delete on affected indices.
+    escalation: Page immediately in prod; writes from game services are failing.
+
+  - id: NodesCountLow
+    stack: cluster-health
+    metric: Nodes
+    summary: Fewer nodes than configured are in the cluster for at least one day-period.
+    min_tier_prod: L2
+    min_tier_nonprod: L1
+    l1_steps:
+      - Compare _cat/nodes against the configured instance count.
+      - Check AWS Health dashboard for node replacement events.
+    escalation: L3 if a dedicated master is missing.
+
+  - id: AutomatedSnapshotFailure
+    stack: ops
+    metric: AutomatedSnapshotFailure
+    summary: An automated snapshot failed, usually because cluster is red or write-blocked.
+    min_tier_prod: L2
+    min_tier_nonprod: L1
+    l1_steps:
+      - Check cluster health; red status prevents snapshots.
+    escalation: L2 to confirm recoverability; L3 if two consecutive failures in prod.
+
+  - id: CPUUtilizationHigh
+    stack: performance
+    metric: CPUUtilization
+    summary: Data node CPU at or above 80% for 15 minutes; search/index latency may rise.
+    min_tier_prod: L1
+    min_tier_nonprod: L1
+    l1_steps:
+      - Check _cat/thread_pool for search/write queues and rejections.
+      - Correlate with load tests or batch reindex jobs.
+    escalation: L2 if rejections are non-zero or latency SLO is breached.
+
+  - id: JVMMemoryPressureHigh
+    stack: performance
+    metric: JVMMemoryPressure
+    summary: JVM heap pressure at or above 95%; risk of circuit breaker trips and node drops.
+    min_tier_prod: L2
+    min_tier_nonprod: L1
+    l1_steps:
+      - Check _cat/nodes heap.percent per node and shard count per node.
+      - Look for large aggregations or fielddata usage.
+    escalation: L3 if nodes are leaving the cluster.
+
+  - id: OldGenJVMMemoryPressureHigh
+    stack: performance
+    metric: OldGenJVMMemoryPressure
+    summary: Old-generation heap at or above 80%; GC is not reclaiming memory.
+    min_tier_prod: L2
+    min_tier_nonprod: L1
+    l1_steps:
+      - Check heap per node and recent GC activity.
+    escalation: L3 if combined with JVMMemoryPressureHigh.
+
+  - id: MasterCPUUtilizationHigh
+    stack: cluster-health
+    metric: MasterCPUUtilization
+    summary: Dedicated master CPU at or above 50%; cluster-state updates may slow down.
+    min_tier_prod: L2
+    min_tier_nonprod: L1
+    l1_steps:
+      - Check _cluster/pending_tasks and total shard count.
+    escalation: L3 if pending tasks keep growing.
+
+  - id: MasterNotReachable
+    stack: cluster-health
+    metric: MasterReachableFromNode
+    summary: The master node is unreachable or stopped; the cluster cannot process state changes.
+    min_tier_prod: L3
+    min_tier_nonprod: L2
+    l1_steps:
+      - Confirm with _cluster/health; do not restart anything.
+    escalation: Page immediately and open an AWS Support case.
+
+  - id: ThreadpoolWriteRejected
+    stack: performance
+    metric: ThreadpoolWriteRejected
+    summary: Write thread pool rejecting requests; clients are seeing indexing failures.
+    min_tier_prod: L2
+    min_tier_nonprod: L1
+    l1_steps:
+      - Check _cat/thread_pool/write per node and bulk request sizes.
+    escalation: L3 if rejections continue for more than 10 minutes in prod.
+
+  - id: ThreadpoolSearchRejected
+    stack: performance
+    metric: ThreadpoolSearchRejected
+    summary: Search thread pool rejecting requests; clients are seeing query failures.
+    min_tier_prod: L2
+    min_tier_nonprod: L1
+    l1_steps:
+      - Check _cat/thread_pool/search per node and expensive queries.
+    escalation: L3 if customer-facing search is failing.
+
+  - id: KMSKeyInaccessible
+    stack: ops
+    metric: KMSKeyInaccessible
+    summary: The KMS key used for encryption at rest is disabled or inaccessible.
+    min_tier_prod: L3
+    min_tier_nonprod: L2
+    l1_steps:
+      - Do not change the key; confirm key state in KMS.
+    escalation: Page immediately; cluster will become unusable.

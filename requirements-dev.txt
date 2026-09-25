@@ -1,0 +1,5 @@
+-r requirements.txt
+bedrock-agentcore-starter-toolkit>=0.3.13   # GatewayClient helpers used by deploy/setup_gateway.py
+boto3>=1.43.0
+python-dotenv>=1.0.1
+pytest>=8.0

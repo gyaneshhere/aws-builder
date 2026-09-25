@@ -1,0 +1,26 @@
+{
+  "receiver": "pagerduty-opensearch",
+  "status": "firing",
+  "orgId": 1,
+  "title": "[FIRING:1] JVMMemoryPressureHigh (telemetry-logs-prod)",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "JVMMemoryPressureHigh",
+        "domain": "telemetry-logs-prod",
+        "env": "prod",
+        "stack": "opensearch"
+      },
+      "annotations": {
+        "summary": "JVM memory pressure 96%",
+        "description": "JVMMemoryPressure 96% on 1 of 6 data nodes for 20m; no nodes have left"
+      },
+      "values": {
+        "B": 96
+      },
+      "startsAt": "2026-09-25T09:12:00Z",
+      "fingerprint": "jvmmemorypressurehigh-telemetry-logs-prod"
+    }
+  ]
+}

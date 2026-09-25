@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BedrockInvoke",
+      "Effect": "Allow",
+      "Action": ["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream"],
+      "Resource": [
+        "arn:aws:bedrock:*::foundation-model/*",
+        "arn:aws:bedrock:${REGION}:${ACCOUNT_ID}:inference-profile/*"
+      ]
+    },
+    {
+      "Sid": "AgentCoreMemory",
+      "Effect": "Allow",
+      "Action": ["bedrock-agentcore:CreateEvent", "bedrock-agentcore:ListEvents", "bedrock-agentcore:GetEvent",
+                 "bedrock-agentcore:RetrieveMemoryRecords", "bedrock-agentcore:ListMemoryRecords"],
+      "Resource": ["arn:aws:bedrock-agentcore:${REGION}:${ACCOUNT_ID}:memory/*"]
+    },
+    {
+      "Sid": "AgentCoreIdentity",
+      "Effect": "Allow",
+      "Action": ["bedrock-agentcore:GetWorkloadAccessToken", "bedrock-agentcore:GetWorkloadAccessTokenForJWT",
+                 "bedrock-agentcore:GetWorkloadAccessTokenForUserId", "bedrock-agentcore:GetResourceApiKey",
+                 "bedrock-agentcore:GetResourceOauth2Token"],
+      "Resource": [
+        "arn:aws:bedrock-agentcore:${REGION}:${ACCOUNT_ID}:workload-identity-directory/default",
+        "arn:aws:bedrock-agentcore:${REGION}:${ACCOUNT_ID}:workload-identity-directory/default/workload-identity/*",
+        "arn:aws:bedrock-agentcore:${REGION}:${ACCOUNT_ID}:token-vault/default",
+        "arn:aws:bedrock-agentcore:${REGION}:${ACCOUNT_ID}:token-vault/default/*"
+      ]
+    },
+    {
+      "Sid": "IdentitySecrets",
+      "Effect": "Allow",
+      "Action": ["secretsmanager:GetSecretValue"],
+      "Resource": ["arn:aws:secretsmanager:${REGION}:${ACCOUNT_ID}:secret:bedrock-agentcore-identity!default/*"]
+    },
+    {
+      "Sid": "Observability",
+      "Effect": "Allow",
+      "Action": ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents", "logs:DescribeLogStreams",
+                 "logs:DescribeLogGroups", "xray:PutTraceSegments", "xray:PutTelemetryRecords",
+                 "xray:GetSamplingRules", "xray:GetSamplingTargets"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Metrics",
+      "Effect": "Allow",
+      "Action": "cloudwatch:PutMetricData",
+      "Resource": "*",
+      "Condition": {"StringEquals": {"cloudwatch:namespace": "bedrock-agentcore"}}
+    },
+    {
+      "Sid": "CodePackage",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject"],
+      "Resource": ["arn:aws:s3:::${DEPLOY_BUCKET}/os-alert-triage/*"]
+    }
+  ]
+}

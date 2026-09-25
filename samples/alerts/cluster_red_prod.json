@@ -1,0 +1,26 @@
+{
+  "receiver": "pagerduty-opensearch",
+  "status": "firing",
+  "orgId": 1,
+  "title": "[FIRING:1] ClusterStatusRed (player-search-prod)",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "ClusterStatusRed",
+        "domain": "player-search-prod",
+        "env": "prod",
+        "stack": "opensearch"
+      },
+      "annotations": {
+        "summary": "Cluster status RED",
+        "description": "2 primary shards unassigned on index player-profiles-2026.09"
+      },
+      "values": {
+        "B": 1
+      },
+      "startsAt": "2026-09-25T09:12:00Z",
+      "fingerprint": "clusterstatusred-player-search-prod"
+    }
+  ]
+}

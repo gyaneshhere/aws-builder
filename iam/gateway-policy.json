@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "InvokeDiagnosticsLambda",
+      "Effect": "Allow",
+      "Action": ["lambda:InvokeFunction"],
+      "Resource": ["arn:aws:lambda:${REGION}:${ACCOUNT_ID}:function:os-triage-diagnostics"]
+    },
+    {
+      "Sid": "GetGateway",
+      "Effect": "Allow",
+      "Action": ["bedrock-agentcore:GetGateway"],
+      "Resource": ["arn:aws:bedrock-agentcore:${REGION}:${ACCOUNT_ID}:gateway/*"]
+    }
+  ]
+}

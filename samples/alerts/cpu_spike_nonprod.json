@@ -1,0 +1,26 @@
+{
+  "receiver": "pagerduty-opensearch",
+  "status": "firing",
+  "orgId": 1,
+  "title": "[FIRING:1] CPUUtilizationHigh (metrictestopenai)",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "CPUUtilizationHigh",
+        "domain": "metrictestopenai",
+        "env": "nonprod",
+        "stack": "opensearch"
+      },
+      "annotations": {
+        "summary": "Data node CPU 86% for 15m",
+        "description": "Load test LT-sinewave running against nonprod domain"
+      },
+      "values": {
+        "B": 86
+      },
+      "startsAt": "2026-09-25T09:12:00Z",
+      "fingerprint": "cpuutilizationhigh-metrictestopenai"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "event": {
+    "event_type": "incident.triggered",
+    "occurred_at": "2026-09-25T09:20:00Z",
+    "data": {
+      "id": "Q1KMS",
+      "title": "[FIRING:1] KMSKeyInaccessible domain=player-search-prod prod",
+      "urgency": "high",
+      "service": {
+        "summary": "pie-dbeng-aws-opensearch"
+      },
+      "created_at": "2026-09-25T09:20:00Z"
+    }
+  }
+}

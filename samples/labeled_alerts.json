@@ -1,0 +1,347 @@
+[
+  {
+    "name": "cluster_red_prod",
+    "expected_tier": "L3",
+    "expected_action": "page",
+    "payload": {
+      "receiver": "pagerduty-opensearch",
+      "status": "firing",
+      "orgId": 1,
+      "title": "[FIRING:1] ClusterStatusRed (player-search-prod)",
+      "alerts": [
+        {
+          "status": "firing",
+          "labels": {
+            "alertname": "ClusterStatusRed",
+            "domain": "player-search-prod",
+            "env": "prod",
+            "stack": "opensearch"
+          },
+          "annotations": {
+            "summary": "Cluster status RED",
+            "description": "2 primary shards unassigned on index player-profiles-2026.09"
+          },
+          "values": {
+            "B": 1
+          },
+          "startsAt": "2026-09-25T09:12:00Z",
+          "fingerprint": "clusterstatusred-player-search-prod"
+        }
+      ]
+    }
+  },
+  {
+    "name": "writes_blocked_prod",
+    "expected_tier": "L3",
+    "expected_action": "page",
+    "payload": {
+      "receiver": "pagerduty-opensearch",
+      "status": "firing",
+      "orgId": 1,
+      "title": "[FIRING:1] ClusterIndexWritesBlocked (player-search-prod)",
+      "alerts": [
+        {
+          "status": "firing",
+          "labels": {
+            "alertname": "ClusterIndexWritesBlocked",
+            "domain": "player-search-prod",
+            "env": "prod",
+            "stack": "opensearch"
+          },
+          "annotations": {
+            "summary": "Index writes blocked",
+            "description": "ClusterIndexWritesBlocked=1 for 5m; FreeStorageSpace on 2 nodes below 2GB"
+          },
+          "values": {
+            "B": 1
+          },
+          "startsAt": "2026-09-25T09:12:00Z",
+          "fingerprint": "clusterindexwritesblocked-player-search-prod"
+        }
+      ]
+    }
+  },
+  {
+    "name": "master_unreachable_prod",
+    "expected_tier": "L3",
+    "expected_action": "page",
+    "payload": {
+      "receiver": "pagerduty-opensearch",
+      "status": "firing",
+      "orgId": 1,
+      "title": "[FIRING:1] MasterNotReachable (telemetry-logs-prod)",
+      "alerts": [
+        {
+          "status": "firing",
+          "labels": {
+            "alertname": "MasterNotReachable",
+            "domain": "telemetry-logs-prod",
+            "env": "prod",
+            "stack": "opensearch"
+          },
+          "annotations": {
+            "summary": "Master not reachable from nodes",
+            "description": "MasterReachableFromNode=0 for 3m"
+          },
+          "values": {
+            "B": 0
+          },
+          "startsAt": "2026-09-25T09:12:00Z",
+          "fingerprint": "masternotreachable-telemetry-logs-prod"
+        }
+      ]
+    }
+  },
+  {
+    "name": "yellow_during_bluegreen_prod",
+    "expected_tier": "L1",
+    "expected_action": "watch",
+    "payload": {
+      "receiver": "pagerduty-opensearch",
+      "status": "firing",
+      "orgId": 1,
+      "title": "[FIRING:1] ClusterStatusYellow (player-search-prod)",
+      "alerts": [
+        {
+          "status": "firing",
+          "labels": {
+            "alertname": "ClusterStatusYellow",
+            "domain": "player-search-prod",
+            "env": "prod",
+            "stack": "opensearch"
+          },
+          "annotations": {
+            "summary": "Cluster status YELLOW",
+            "description": "Replicas relocating; AWS blue/green configuration change in progress started 09:05"
+          },
+          "values": {
+            "B": 1
+          },
+          "startsAt": "2026-09-25T09:12:00Z",
+          "fingerprint": "clusterstatusyellow-player-search-prod"
+        }
+      ]
+    }
+  },
+  {
+    "name": "cpu_spike_nonprod",
+    "expected_tier": "L1",
+    "expected_action": "watch",
+    "payload": {
+      "receiver": "pagerduty-opensearch",
+      "status": "firing",
+      "orgId": 1,
+      "title": "[FIRING:1] CPUUtilizationHigh (metrictestopenai)",
+      "alerts": [
+        {
+          "status": "firing",
+          "labels": {
+            "alertname": "CPUUtilizationHigh",
+            "domain": "metrictestopenai",
+            "env": "nonprod",
+            "stack": "opensearch"
+          },
+          "annotations": {
+            "summary": "Data node CPU 86% for 15m",
+            "description": "Load test LT-sinewave running against nonprod domain"
+          },
+          "values": {
+            "B": 86
+          },
+          "startsAt": "2026-09-25T09:12:00Z",
+          "fingerprint": "cpuutilizationhigh-metrictestopenai"
+        }
+      ]
+    }
+  },
+  {
+    "name": "jvm_pressure_prod",
+    "expected_tier": "L2",
+    "expected_action": "notify",
+    "payload": {
+      "receiver": "pagerduty-opensearch",
+      "status": "firing",
+      "orgId": 1,
+      "title": "[FIRING:1] JVMMemoryPressureHigh (telemetry-logs-prod)",
+      "alerts": [
+        {
+          "status": "firing",
+          "labels": {
+            "alertname": "JVMMemoryPressureHigh",
+            "domain": "telemetry-logs-prod",
+            "env": "prod",
+            "stack": "opensearch"
+          },
+          "annotations": {
+            "summary": "JVM memory pressure 96%",
+            "description": "JVMMemoryPressure 96% on 1 of 6 data nodes for 20m; no nodes have left"
+          },
+          "values": {
+            "B": 96
+          },
+          "startsAt": "2026-09-25T09:12:00Z",
+          "fingerprint": "jvmmemorypressurehigh-telemetry-logs-prod"
+        }
+      ]
+    }
+  },
+  {
+    "name": "storage_low_prod",
+    "expected_tier": "L2",
+    "expected_action": "notify",
+    "payload": {
+      "receiver": "pagerduty-opensearch",
+      "status": "firing",
+      "orgId": 1,
+      "title": "[FIRING:1] FreeStorageSpaceLow (telemetry-logs-prod)",
+      "alerts": [
+        {
+          "status": "firing",
+          "labels": {
+            "alertname": "FreeStorageSpaceLow",
+            "domain": "telemetry-logs-prod",
+            "env": "prod",
+            "stack": "opensearch"
+          },
+          "annotations": {
+            "summary": "Free storage below 20%",
+            "description": "Min FreeStorageSpace 38GB (18%) on data node; ISM delete policy last ran 3 days ago"
+          },
+          "values": {
+            "B": 38000
+          },
+          "startsAt": "2026-09-25T09:12:00Z",
+          "fingerprint": "freestoragespacelow-telemetry-logs-prod"
+        }
+      ]
+    }
+  },
+  {
+    "name": "write_rejections_prod",
+    "expected_tier": "L2",
+    "expected_action": "notify",
+    "payload": {
+      "receiver": "pagerduty-opensearch",
+      "status": "firing",
+      "orgId": 1,
+      "title": "[FIRING:1] ThreadpoolWriteRejected (player-search-prod)",
+      "alerts": [
+        {
+          "status": "firing",
+          "labels": {
+            "alertname": "ThreadpoolWriteRejected",
+            "domain": "player-search-prod",
+            "env": "prod",
+            "stack": "opensearch"
+          },
+          "annotations": {
+            "summary": "Write thread pool rejections",
+            "description": "ThreadpoolWriteRejected=140 over 5m on 2 nodes"
+          },
+          "values": {
+            "B": 140
+          },
+          "startsAt": "2026-09-25T09:12:00Z",
+          "fingerprint": "threadpoolwriterejected-player-search-prod"
+        }
+      ]
+    }
+  },
+  {
+    "name": "snapshot_fail_nonprod",
+    "expected_tier": "L1",
+    "expected_action": "watch",
+    "payload": {
+      "receiver": "pagerduty-opensearch",
+      "status": "firing",
+      "orgId": 1,
+      "title": "[FIRING:1] AutomatedSnapshotFailure (metrictestopenai)",
+      "alerts": [
+        {
+          "status": "firing",
+          "labels": {
+            "alertname": "AutomatedSnapshotFailure",
+            "domain": "metrictestopenai",
+            "env": "nonprod",
+            "stack": "opensearch"
+          },
+          "annotations": {
+            "summary": "Automated snapshot failed",
+            "description": "One snapshot failure; cluster green"
+          },
+          "values": {
+            "B": 1
+          },
+          "startsAt": "2026-09-25T09:12:00Z",
+          "fingerprint": "automatedsnapshotfailure-metrictestopenai"
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown_rule_prod",
+    "expected_tier": "L2",
+    "expected_action": "notify",
+    "payload": {
+      "rule": "SearchLatencyP99High",
+      "domain": "player-search-prod",
+      "environment": "prod",
+      "title": "Search p99 latency 2.4s (SLO 800ms)",
+      "description": "SearchLatency p99 above SLO for 10 minutes; error rate normal",
+      "metric": "SearchLatency",
+      "value": 2400,
+      "threshold": 800
+    }
+  },
+  {
+    "name": "kms_key_prod_pagerduty",
+    "expected_tier": "L3",
+    "expected_action": "page",
+    "payload": {
+      "event": {
+        "event_type": "incident.triggered",
+        "occurred_at": "2026-09-25T09:20:00Z",
+        "data": {
+          "id": "Q1KMS",
+          "title": "[FIRING:1] KMSKeyInaccessible domain=player-search-prod prod",
+          "urgency": "high",
+          "service": {
+            "summary": "pie-dbeng-aws-opensearch"
+          },
+          "created_at": "2026-09-25T09:20:00Z"
+        }
+      }
+    }
+  },
+  {
+    "name": "red_resolved_prod",
+    "expected_tier": "L1",
+    "expected_action": "record_only",
+    "payload": {
+      "receiver": "pagerduty-opensearch",
+      "status": "resolved",
+      "orgId": 1,
+      "title": "[RESOLVED:1] ClusterStatusRed (player-search-prod)",
+      "alerts": [
+        {
+          "status": "resolved",
+          "labels": {
+            "alertname": "ClusterStatusRed",
+            "domain": "player-search-prod",
+            "env": "prod",
+            "stack": "opensearch"
+          },
+          "annotations": {
+            "summary": "Cluster status RED",
+            "description": "resolved"
+          },
+          "values": {
+            "B": 0
+          },
+          "startsAt": "2026-09-25T09:12:00Z",
+          "fingerprint": "clusterstatusred-player-search-prod"
+        }
+      ]
+    }
+  }
+]
