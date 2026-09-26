@@ -1,6 +1,6 @@
 # OpenSearch Alert Triage — Jev + Amazon Bedrock + AgentCore
 
-Extends the "Jev as an LLM router" pattern (companion repo `kevinlupera/jev-strands-router`)
+Extends the "Jev as an LLM router" pattern
 from *query complexity → model tier* to *OpenSearch alert → runbook tier (L1/L2/L3) → model + tool scope*.
 
 ```
