@@ -1,0 +1,5 @@
+-r requirements.txt
+boto3>=1.43.0
+python-dotenv>=1.0.1
+pytest>=8.0
+scipy>=1.11     # test-only: cross-checks the kernel's Mann-Whitney p-values
