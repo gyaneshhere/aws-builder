@@ -1,0 +1,10 @@
+# Local tooling (your laptop / SageMaker Studio). Training code runs in SageMaker containers.
+sagemaker==2.257.6          # v2 estimator API; v3 (sagemaker-train) uses a different API, see README
+boto3>=1.40
+datasets>=3.0
+pandas>=2.0
+scikit-learn>=1.3
+scipy>=1.11
+matplotlib>=3.8             # reliability diagram in example 10 (optional)
+python-dotenv>=1.0
+pytest>=8.0

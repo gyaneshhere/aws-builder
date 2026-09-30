@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Jev-style decision API (choice / noul / score) on Amazon Bedrock
+
+Parameters:
+  BedrockModelId:
+    Type: String
+    Default: us.anthropic.claude-haiku-4-5-20251001-v1:0
+    Description: Bedrock model or inference profile ID used for decisions
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 30
+    MemorySize: 256
+    Architectures: [arm64]
+
+Resources:
+  DecisionApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      Auth:
+        DefaultAuthorizer: AWS_IAM          # callers sign requests with SigV4; no anonymous access
+
+  DecisionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/
+      Handler: handler.lambda_handler
+      Environment:
+        Variables:
+          BEDROCK_MODEL: !Ref BedrockModelId
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: [bedrock:InvokeModel]
+              Resource:
+                - !Sub arn:aws:bedrock:*::foundation-model/*
+                - !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/*
+      Events:
+        Choice: {Type: HttpApi, Properties: {ApiId: !Ref DecisionApi, Path: /choice, Method: POST}}
+        Noul:   {Type: HttpApi, Properties: {ApiId: !Ref DecisionApi, Path: /noul, Method: POST}}
+        Score:  {Type: HttpApi, Properties: {ApiId: !Ref DecisionApi, Path: /score, Method: POST}}
+
+Outputs:
+  ApiUrl:
+    Value: !Sub https://${DecisionApi}.execute-api.${AWS::Region}.amazonaws.com
