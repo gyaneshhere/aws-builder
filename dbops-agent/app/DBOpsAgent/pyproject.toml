@@ -1,0 +1,15 @@
+[project]
+name = "dbops-agent"
+version = "0.1.0"
+description = "Read-only database incident investigator for AgentCore Runtime"
+requires-python = ">=3.11"
+dependencies = [
+  "boto3>=1.42.0,<2",
+  "opensearch-py>=3.0.0,<4",
+]
+
+[dependency-groups]
+dev = [
+  "openai>=2.0.0,<3",
+  "aws-bedrock-token-generator>=1.0.0,<2",
+]

@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+agentcore/agentcore.json
+agentcore/cdk/
+app/DBOpsAgent/lifecycle/server.py
+app/DBOpsAgent/pyproject.aws-generated.toml
+app/DBOpsAgent/policies/aws-generated-*.json
+.env

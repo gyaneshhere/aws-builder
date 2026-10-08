@@ -1,0 +1,6 @@
+# Placeholder only. bootstrap_from_aws.sh copies the authoritative AWS-generated ADOT config.
+receivers: {}
+processors: {}
+exporters: {}
+service:
+  pipelines: {}
